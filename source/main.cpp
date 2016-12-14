@@ -65,6 +65,8 @@ void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 		SDL_RenderDrawLine(window.GetRenderer(), first.x*scaleX, first.y*scaleY, second.x*scaleX, second.y*scaleY);
 	}
 	SDL_RenderPresent(window.GetRenderer());
+	
+	SDL_DestroyTexture(texture);
 }
 
 int main(int argc, char** argv)
