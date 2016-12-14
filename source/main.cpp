@@ -18,7 +18,7 @@ void ColorOpaquePixels(Uint32* pixels, int x, int y, int w, std::vector<Point>& 
 	}
 }
 
-void TextureModifyingMagic(Window& window, int imageSize)
+void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 {
 	SDL_Surface* surface;
 	surface = IMG_Load("weirdFace.png");
@@ -44,10 +44,11 @@ void TextureModifyingMagic(Window& window, int imageSize)
 
 	SDL_UnlockTexture(texture);
 	pixels = nullptr;
-	double scale  = imageSize/surface->h;
+	double scaleX = imageWidth/surface->w;
+	double scaleY  = imageHeight/surface->h;
 	SDL_FreeSurface(surface);
 
-	SDL_Rect destination = {0, 0, imageSize, imageSize};
+	SDL_Rect destination = {0, 0, imageWidth, imageHeight};
 	SDL_RenderClear(window.GetRenderer());
 	SDL_RenderCopy(window.GetRenderer(), texture, nullptr, &destination);
 	
@@ -57,7 +58,7 @@ void TextureModifyingMagic(Window& window, int imageSize)
 	{
 		Point first = hull[i];
 		Point second = hull[(i+1)%hull.size()];
-		SDL_RenderDrawLine(window.GetRenderer(), first.x*scale, first.y*scale, second.x*scale, second.y*scale);
+		SDL_RenderDrawLine(window.GetRenderer(), first.x*scaleX, first.y*scaleY, second.x*scaleX, second.y*scaleY);
 	}
 	SDL_RenderPresent(window.GetRenderer());
 }
@@ -69,7 +70,7 @@ int main(int argc, char** argv)
 	SDL_Event event;
 	Window window(1024, 1024);
 
-	TextureModifyingMagic(window, 1024);
+	TextureModifyingMagic(window, 1024, 1024);
 		
 	while( !isDone)
 	{
