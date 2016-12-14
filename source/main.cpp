@@ -1,6 +1,10 @@
 #include "window.h"
 #include <assert.h>
 #include "hull.h"
+#include <string>
+
+std::string imagePath = "weirdFace.png";
+unsigned int alphaThreshold =0;
 
 
 //Samples of input sets for convex hull problem
@@ -11,7 +15,7 @@ std::vector <Point> input = {{20, 13}, {24, 17}, {28, 18}, {34, 12}, {37, 16}, {
 void ColorOpaquePixels(Uint32* pixels, int x, int y, int w, std::vector<Point>& points)
 {
 	Uint32& pixel = pixels[y*w + x];
-	if((pixel & (255<<24)) >> 24 > 0)
+	if((pixel & (255<<24)) >> 24 > alphaThreshold)
 	{
 		//pixel = 0b11111111000000000000000011111111;
 		points.push_back({x,y});
@@ -21,7 +25,7 @@ void ColorOpaquePixels(Uint32* pixels, int x, int y, int w, std::vector<Point>& 
 void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 {
 	SDL_Surface* surface;
-	surface = IMG_Load("weirdFace.png");
+	surface = IMG_Load(imagePath.c_str());
 	assert(surface != nullptr);
 	
 	void* pixels;
