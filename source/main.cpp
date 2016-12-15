@@ -3,14 +3,14 @@
 #include "hull.h"
 #include <string>
 
-std::string imagePath = "whatever.png";//"weirdFace.png";
+std::string imagePath = "weirdFace.png";
 unsigned int alphaThreshold = 0;
 
 
 //Samples of input sets for convex hull problem
-//std::vector<Point> input = { {-10,10}, {-7,3}, {-10,-10}, {-1,9}, {-1,0}, {-2,-3}, {6,4}, {5,-3}, {10,10}, {10,-10}};
+std::vector<Point> input = { {-10,10}, {-7,3}, {-10,-10}, {-1,9}, {-1,0}, {-2,-3}, {6,4}, {5,-3}, {10,10}, {10,-10}};
 //std::vector<Point> input = {{2, 1}, {2, 1}, {2, 1}, {3, 1}, {3, 1}, {3, 2}, {4, 3}, {5, 2}, {5, 1}, {4, 0}, {2, 0}, {2, 1}};
-std::vector <Point> input = {{20, 13}, {24, 17}, {28, 18}, {34, 12}, {37, 16}, {34, 20}, {41, 30}, {53, 26}, {54, 12}, {49, 8}, {29, 7}, {20, 13}};
+//std::vector <Point> input = {{20, 13}, {24, 17}, {28, 18}, {34, 12}, {37, 16}, {34, 20}, {41, 30}, {53, 26}, {54, 12}, {49, 8}, {29, 7}, {20, 13}};
 
 void AnalyzePixel(Uint32* pixels, int x, int y, int w, std::vector<Point>& points)
 {
@@ -57,7 +57,13 @@ void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 	SDL_RenderCopy(window.GetRenderer(), texture, nullptr, &destination);
 	
 	SDL_SetRenderDrawColor(window.GetRenderer(), 0, 0, 255, 255);
-	std::vector<Point> hull = ConvexHull::Quickhull(points);
+
+
+	//std::vector<Point> hull =  ConvexHull::Quickhull(points);
+	//std::vector<Point> hull =  ConvexHull::MonotoneChain(points);
+	std::vector<Point> hull = ConvexHull::GiftWrapping(points);
+
+
 	for(std::size_t i = 0; i < hull.size(); ++i)
 	{
 		Point first = hull[i];
@@ -74,10 +80,13 @@ int main(int argc, char** argv)
 	bool isDone = false;
 
 	SDL_Event event;
-	Window window(512, 512);
+	Window window(1024, 1024);
 
-	TextureModifyingMagic(window, 512, 512);
-		
+	TextureModifyingMagic(window, 1024, 1024);
+	//ConvexHull::Quickhull(points);
+	//ConvexHull::MonotoneChain(input);
+	//ConvexHull::GiftWrapping(input);
+	
 	while( !isDone)
 	{
 

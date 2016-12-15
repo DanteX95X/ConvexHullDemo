@@ -6,7 +6,7 @@
 struct Point
 {
 public:
-	Point(int initX, int initY)
+	Point(int initX = 0, int initY = 0)
 	:	x{initX}, y{initY}
 	{}
 
