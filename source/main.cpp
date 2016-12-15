@@ -3,8 +3,8 @@
 #include "hull.h"
 #include <string>
 
-std::string imagePath = "weirdFace.png";
-unsigned int alphaThreshold =0;
+std::string imagePath = "whatever.png";//"weirdFace.png";
+unsigned int alphaThreshold = 0;
 
 
 //Samples of input sets for convex hull problem
@@ -12,12 +12,12 @@ unsigned int alphaThreshold =0;
 //std::vector<Point> input = {{2, 1}, {2, 1}, {2, 1}, {3, 1}, {3, 1}, {3, 2}, {4, 3}, {5, 2}, {5, 1}, {4, 0}, {2, 0}, {2, 1}};
 std::vector <Point> input = {{20, 13}, {24, 17}, {28, 18}, {34, 12}, {37, 16}, {34, 20}, {41, 30}, {53, 26}, {54, 12}, {49, 8}, {29, 7}, {20, 13}};
 
-void ColorOpaquePixels(Uint32* pixels, int x, int y, int w, std::vector<Point>& points)
+void AnalyzePixel(Uint32* pixels, int x, int y, int w, std::vector<Point>& points)
 {
 	Uint32& pixel = pixels[y*w + x];
 	if((pixel & (255<<24)) >> 24 > alphaThreshold)
 	{
-		//pixel = 0b11111111000000000000000011111111;
+		pixel = 0b11111111000000000000000011111111;
 		points.push_back({x,y});
 	}
 }
@@ -42,7 +42,7 @@ void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 	{
 		for(int y = 0; y < surface->h; ++y)
 		{
-			ColorOpaquePixels(upixels, x, y, surface->w, points);
+			AnalyzePixel(upixels, x, y, surface->w, points);
 		}
 	}
 
@@ -74,9 +74,9 @@ int main(int argc, char** argv)
 	bool isDone = false;
 
 	SDL_Event event;
-	Window window(1024, 1024);
+	Window window(512, 512);
 
-	TextureModifyingMagic(window, 1024, 1024);
+	TextureModifyingMagic(window, 512, 512);
 		
 	while( !isDone)
 	{

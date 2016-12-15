@@ -90,6 +90,7 @@ std::vector<Point> ConvexHull::Quickhull(std::vector<Point>& points)
 	std::vector<Point> rightPart = FindHull(below, maxPoint, minPoint);
 	hull.insert(hull.end(), rightPart.begin(), rightPart.end());
 	
+	std::cout << hull.size() << '\n';
 	for(auto point : hull)
 		std::cout << point;
 		
