@@ -4,7 +4,6 @@
 #include <string>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-//#include "../objects/prop.h"
 
 class Window
 {
@@ -13,8 +12,6 @@ public:
 	~Window();
 
 	void SetUpWindow(unsigned int width, unsigned int height, std::string title, Uint32 flags = SDL_WINDOW_SHOWN);
-	
-	//void RenderProp(Prop& prop);
 
 	SDL_Renderer* GetRenderer();
 

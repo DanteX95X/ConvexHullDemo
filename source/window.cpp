@@ -1,6 +1,5 @@
 #include "window.h"
 #include <assert.h>
-//#include "../utilities/texture_flyweight.h"
 
 Window::Window(unsigned int widthInit, unsigned int heightInit, std::string title)
 	: width{widthInit}, height{heightInit}, window{nullptr}, renderer{nullptr}
@@ -43,7 +42,6 @@ void Window::CreateRenderer()
 		SDL_DestroyRenderer(renderer);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	assert(renderer != nullptr);
-	//TextureFlyweight::Instance().SetRenderer(renderer);
 }
 
 void Window::SetUpWindow(unsigned int width, unsigned int height, std::string title, Uint32 flags)
@@ -53,13 +51,6 @@ void Window::SetUpWindow(unsigned int width, unsigned int height, std::string ti
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 	windowSurface = SDL_GetWindowSurface(window);
 }
-
-/*void Window::RenderProp(Prop& prop)
-{
-	SDL_Rect destination = { static_cast<int>(prop.GetPosition().x), static_cast<int>(prop.GetPosition().y), static_cast<int>(prop.GetSize().x), static_cast<int>(prop.GetSize().y) };
-	SDL_RenderCopy(renderer, prop.GetTexture(), nullptr, &destination);
-}*/
-
 
 SDL_Renderer* Window::GetRenderer() { return renderer; }
 unsigned int Window::GetWidth() { return width; }

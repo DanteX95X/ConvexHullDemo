@@ -5,6 +5,11 @@
 #include <vector>
 namespace ConvexHull
 {
+	extern std::string imagePath;
+	extern unsigned int alphaThreshold;
+	
+	std::vector<Point> CalculateConvexHull(std::vector<Point>& points);
+	
 	int DistanceFromLine(Point start, Point end, Point point) ;
 	std::vector<Point> FindHull(const std::vector<Point>& points, Point begin, Point end);
 	std::vector<Point> Quickhull(const std::vector<Point>& points);

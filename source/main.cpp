@@ -1,23 +1,16 @@
 #include "window.h"
 #include <assert.h>
 #include "hull.h"
-#include <string>
+#include <string> 
+#include "timer.h"
 
-std::string imagePath = "weirdFace.png";
-unsigned int alphaThreshold = 0;
-
-
-//Samples of input sets for convex hull problem
-std::vector<Point> input = { {-10,10}, {-7,3}, {-10,-10}, {-1,9}, {-1,0}, {-2,-3}, {6,4}, {5,-3}, {10,10}, {10,-10}};
-//std::vector<Point> input = {{2, 1}, {2, 1}, {2, 1}, {3, 1}, {3, 1}, {3, 2}, {4, 3}, {5, 2}, {5, 1}, {4, 0}, {2, 0}, {2, 1}};
-//std::vector <Point> input = {{20, 13}, {24, 17}, {28, 18}, {34, 12}, {37, 16}, {34, 20}, {41, 30}, {53, 26}, {54, 12}, {49, 8}, {29, 7}, {20, 13}};
 
 void AnalyzePixel(Uint32* pixels, int x, int y, int w, std::vector<Point>& points)
 {
 	Uint32& pixel = pixels[y*w + x];
-	if((pixel & (255<<24)) >> 24 > alphaThreshold)
+	if((pixel & (255<<24)) >> 24 > ConvexHull::alphaThreshold)
 	{
-		pixel = 0b11111111000000000000000011111111;
+		pixel = 0xFF0000FF;
 		points.push_back({x,y});
 	}
 }
@@ -25,7 +18,7 @@ void AnalyzePixel(Uint32* pixels, int x, int y, int w, std::vector<Point>& point
 void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 {
 	SDL_Surface* surface;
-	surface = IMG_Load(imagePath.c_str());
+	surface = IMG_Load(ConvexHull::imagePath.c_str());
 	assert(surface != nullptr);
 	
 	void* pixels;
@@ -48,8 +41,8 @@ void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 
 	SDL_UnlockTexture(texture);
 	pixels = nullptr;
-	double scaleX = imageWidth/surface->w;
-	double scaleY  = imageHeight/surface->h;
+	double scaleX = imageWidth / static_cast<double>(surface->w);
+	double scaleY  = imageHeight / static_cast<double>(surface->h);
 	SDL_FreeSurface(surface);
 
 	SDL_Rect destination = {0, 0, imageWidth, imageHeight};
@@ -58,11 +51,13 @@ void TextureModifyingMagic(Window& window, int imageWidth, int imageHeight)
 	
 	SDL_SetRenderDrawColor(window.GetRenderer(), 0, 0, 255, 255);
 
-
-	//std::vector<Point> hull =  ConvexHull::Quickhull(points);
-	//std::vector<Point> hull =  ConvexHull::MonotoneChain(points);
-	std::vector<Point> hull = ConvexHull::GiftWrapping(points);
-
+	Timer::Instance().Update();
+	
+	std::vector<Point> hull = ConvexHull::CalculateConvexHull(points);
+	
+	Timer::Instance().Update();
+	std::cout << "\n\tTime = " << Timer::Instance().GetTime() << "s\n";
+	
 
 	for(std::size_t i = 0; i < hull.size(); ++i)
 	{
@@ -83,9 +78,6 @@ int main(int argc, char** argv)
 	Window window(1024, 1024);
 
 	TextureModifyingMagic(window, 1024, 1024);
-	//ConvexHull::Quickhull(points);
-	//ConvexHull::MonotoneChain(input);
-	//ConvexHull::GiftWrapping(input);
 	
 	while( !isDone)
 	{
