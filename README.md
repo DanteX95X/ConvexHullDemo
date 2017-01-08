@@ -1,8 +1,10 @@
 # ConvexHullDemo
 
 Demo na spotkanie kręgu algorytmicznego.
+Program analizuje dowolną grafikę(rastrową) i wylicza convex hulla z pikseli, których alfa przekracza pewien zakres.
+
 Wymaga bibliotek SDL2 i SDL2_image. 
-Najlepiej zgodnie z tymi tutorialami:
+Najlepiej postępować zgodnie z tymi tutorialami:
 http://lazyfoo.net/tutorials/SDL/01_hello_SDL/index.php
 http://lazyfoo.net/tutorials/SDL/06_extension_libraries_and_loading_other_image_formats/index.php
 
